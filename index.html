@@ -363,7 +363,10 @@
 
   /* ---------------- menu ---------------- */
   var SUB = {"ET":["Introduction, Relativism, Subjectivism, and Supernaturalism","Intuitionism, Emotivism, and Prescriptivism","Consistency, the Golden Rule, and Moral Rationality","Consequentialism, Nonconsequentialism, Virtue, and Natural Law"],"FE":["Formal Ethics and Consistency","The Golden Rule and Universal Law","Moral Rationality"],"MS":["Ancient","Medieval","Modern","Twentieth Century"],"RE":["Introductory Materials: Faith and Reason","The Cosmological Argument","The Teleological Argument","The Problem of Evil","Language Arguments","Evidence and Freud","Reformed Epistemology","The Afterlife","Ethics and Religion"],"AP":["Austin","Ayer","Plantinga","Chisholm, Quine, Russell, and Wittgenstein"]};
-  var openState = {};
+  // Open/closed state of list sections, saved per visitor in localStorage only.
+  var OPEN_DEFAULT = {'ET':true,'ET/0':true,'RE':true,'RE/0':true};
+  var openState = (function(){ try{ return JSON.parse(localStorage.getItem('gensler-open'))||{}; }catch(e){ return {}; } })();
+  function isOpen(key){ return (key in openState) ? !!openState[key] : !!OPEN_DEFAULT[key]; }
   function pairRow(s){
     var row = el('div', s.top ? 'pair solo' : 'pair');
     var m = SUMS.filter(function(x){return x.id===s.sum;})[0];
@@ -386,8 +389,12 @@
   }
   function fold(key, cls, title, n){
     var d = el('details', cls);
-    if(openState[key]) d.open = true;
-    d.addEventListener('toggle', function(){ openState[key] = d.open; });
+    if(isOpen(key)) d.open = true;
+    d.addEventListener('toggle', function(){
+      if(d.open===isOpen(key)) return;  // initial render, not a visitor's choice
+      openState[key] = d.open;
+      try{ localStorage.setItem('gensler-open', JSON.stringify(openState)); }catch(e){}
+    });
     var sm = el('summary');
     sm.appendChild(el('span','fname', title));
     sm.appendChild(el('span','fct', n+(n===1?' set':' sets')));
