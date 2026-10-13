@@ -277,6 +277,8 @@
   .pairlist{display:flex;flex-direction:column;gap:9px}
   .pair{display:grid;grid-template-columns:1fr 1fr;gap:9px}
   .setcard.studycard{background:var(--study-bg);border-color:var(--study-line)}
+  .setcard.studycard{align-items:center}
+  .sarrow{flex:none;color:var(--dim);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:16px;line-height:1}
   .setcard.studycard:hover{border-color:var(--study-hover)}
   :root{--study-bg:#eef4fb;--study-line:#d3e0ef;--study-hover:#a9bfd9}
   :root[data-theme="dark"]{--study-bg:#222b36;--study-line:#344355;--study-hover:#4d6582}
@@ -284,6 +286,7 @@
     .pairlist{gap:16px}
     .pair{grid-template-columns:1fr;gap:6px}
     .pairgap{display:none}
+    .sarrow{transform:rotate(90deg)}
   }
 </style>
 </head>
@@ -373,6 +376,7 @@
     if(m){
       var sb = el('button','setcard studycard');
       sb.appendChild(el('span','nm', s.topic+' - Study'));
+      var ar = el('span','sarrow','\u2192'); ar.setAttribute('aria-hidden','true'); sb.appendChild(ar);
       sb.onclick=function(){ view={name:'sum',sum:m,i:Math.min(s.fi||0,m.f.length-1)}; render(); };
       row.appendChild(sb);
     } else if(!s.top) row.appendChild(el('div','pairgap'));
