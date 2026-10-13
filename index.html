@@ -277,6 +277,8 @@
   .pairlist{display:flex;flex-direction:column;gap:9px}
   .pair{display:grid;grid-template-columns:1fr 1fr;gap:9px}
   .setcard.studycard{background:var(--study-bg);border-color:var(--study-line)}
+  .setcard.interactive{border:1.5px solid var(--accent);padding:11.5px 13.5px}
+  .setcard.interactive:hover{border-color:var(--accent-hover)}
   .setcard.studycard{align-items:center}
   .sarrow{flex:none;color:var(--dim);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;font-size:16px;line-height:1}
   .setcard.studycard:hover{border-color:var(--study-hover)}
@@ -380,7 +382,7 @@
       sb.onclick=function(){ view={name:'sum',sum:m,i:Math.min(s.fi||0,m.f.length-1)}; render(); };
       row.appendChild(sb);
     } else if(!s.top) row.appendChild(el('div','pairgap'));
-    var b = el('button','setcard');
+    var b = el('button','setcard interactive');
     b.appendChild(el('span','nm', s.topic+' - Interactive'));
     var sc = firstTryScore(s);
     var ct = el('span','ct');
